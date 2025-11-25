@@ -5,6 +5,7 @@ This was adapted from a GeeksforGeeks article "Program for Sudoku Generator" by 
 https://www.geeksforgeeks.org/program-sudoku-generator/
 
 """
+import random
 
 class SudokuGenerator:
     '''
@@ -202,7 +203,22 @@ class SudokuGenerator:
 	Return: None
     '''
     def remove_cells(self):
-        pass
+        num_removed  = self.removed_cells
+        while num_removed > 0:
+            random_num_one = random.randrange(9,9)
+            random_num_two = random.randrange(9,9)
+            i = random_num_one
+            j = random_num_two
+            if self.board[i][j] == 0:
+                continue
+            else:
+                self.board[i][j] = 0
+                num_removed -= 1
+
+
+
+
+
 
 '''
 DO NOT CHANGE
