@@ -1,3 +1,7 @@
+import pygame
+from cell import Cell
+from sudoku_generator import generate_sudoku, SudokuGenerator
+
 class Board:
     def __init__(self, width, height, screen, difficulty):
         self.width = width
@@ -5,35 +9,102 @@ class Board:
         self.screen = screen
         self.difficulty = difficulty
 
+        if difficulty == "easy":
+            removed = 30
+        elif difficulty == "medium":
+            removed = 40
+        else:
+            removed = 50
+
+        self.board = generate_sudoku(9, removed)
+
+        solver = SudokuGenerator(9, removed=0)
+        solver.fill_values()
+        self.solution = solver.get_board()
+
+        self.original = []
+        for row in self.board:
+            new_row = []
+            for value in row:
+                new_row.append(value)
+
+            self.original.append(new_row)
+
+        self.cells = []
+        for r in range(9):
+            row_cells = []
+            for c in range(9):
+                row_cells.append(Cell(self.board[r][c], r, c, screen))
+            self.cells.append(row_cells)
+
+        self.selected = None
+
     def draw(self):
-        pass
+        for row in self.cells:
+            for cell in row:
+                cell.draw()
+
+        for i in range(10):
+            thickness = 3 if i % 3 == 0 else 1
+            pygame.draw.line(self.screen, (0, 0, 0), (0, i * 60), (540, i * 60), thickness)
+            pygame.draw.line(self.screen, (0, 0, 0), (i * 60, 0), (i * 60, 540), thickness)
 
     def select(self, row, col):
-        pass
+        if self.selected:
+            r, c = self.selected
+            self.cells[r][c].selected = False
+
+        self.selected = (row, col)
+        self.cells[row][col].selected = True
 
     def click(self, x, y):
-        pass
+        if x < 540 and y < 540:
+            return (y // 60, x // 60)
+        return None
 
     def clear(self):
-        pass
+        if self.selected:
+            r, c = self.selected
+            if self.original[r][c] == 0:
+                self.cells[r][c].set_cell_value(0)
+                self.cells[r][c].set_sketched_value(0)
 
     def sketch(self, value):
-        pass
+        if self.selected:
+            r, c = self.selected
+            if self.original[r][c] == 0:
+                self.cells[r][c].set_sketched_value(value)
 
     def place_number(self, value):
-        pass
-
-    def reset_to_original(self):
-        pass
-
-    def is_full(self):
-        pass
+        if self.selected:
+            r, c = self.selected
+            if self.original[r][c] == 0:
+                self.cells[r][c].set_cell_value(value)
+                self.cells[r][c].set_sketched_value(0)
+                self.update_board()
 
     def update_board(self):
-        pass
+        for r in range(9):
+            for c in range(9):
+                self.board[r][c] = self.cells[r][c].value
 
-    def find_empty(self):
-        pass
+    def is_full(self):
+        for r in range(9):
+            for c in range(9):
+                if self.cells[r][c].value == 0:
+                    return False
+        return True
+
+    def reset_to_original(self):
+        for r in range(9):
+            for c in range(9):
+                self.cells[r][c].set_cell_value(self.original[r][c])
+                self.cells[r][c].set_sketched_value(0)
+        self.update_board()
 
     def check_board(self):
-        pass
+        for r in range(9):
+            for c in range(9):
+                if self.cells[r][c].value != self.solution[r][c]:
+                    return False
+        return True
