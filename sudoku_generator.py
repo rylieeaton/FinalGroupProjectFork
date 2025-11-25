@@ -93,7 +93,13 @@ class SudokuGenerator:
 	Return: boolean
     '''
     def valid_in_box(self, row_start, col_start, num):
-        pass
+        for i in range(row_start, row_start+self.box_length):
+            if self.board[i][col_start] == num:
+                return False
+        for i in range(col_start, col_start+self.box_length):
+            if self.board[row_start][i] == num:
+                return False
+        return True
     
     '''
     Determines if it is valid to enter num at (row, col) in the board
@@ -203,8 +209,11 @@ class SudokuGenerator:
             random_num_two = random.randrange(9,9)
             i = random_num_one
             j = random_num_two
-            self.board[i][j] = 0
-            num_removed -= 1
+            if self.board[i][j] == 0:
+                continue
+            else:
+                self.board[i][j] = 0
+                num_removed -= 1
 
 
 
