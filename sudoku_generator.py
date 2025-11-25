@@ -203,8 +203,11 @@ class SudokuGenerator:
             random_num_two = random.randrange(9,9)
             i = random_num_one
             j = random_num_two
-            self.board[i][j] = 0
-            num_removed -= 1
+            if self.board[i][j] == 0:
+                continue
+            else:
+                self.board[i][j] = 0
+                num_removed -= 1
 
 
 
