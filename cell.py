@@ -1,4 +1,5 @@
 import pygame
+
 pygame.font.init()
 FONT = pygame.font.SysFont("arial", 32)
 SKETCH_FONT = pygame.font.SysFont("arial", 18)

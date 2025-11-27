@@ -150,7 +150,9 @@ class SudokuGenerator:
 	Return: None
     '''
     def fill_diagonal(self):
-        pass
+        self.fill_box(0,0)
+        self.fill_box(3,3)
+        self.fill_box(6,6)
 
     '''
     DO NOT CHANGE
@@ -227,8 +229,6 @@ class SudokuGenerator:
             else:
                 self.board[i][j] = 0
                 num_removed -= 1
-
-
 
 
 
