@@ -67,14 +67,66 @@ class Sudoku():
 
                                 pygame.display.flip()
 
+                                start_screen_on_fifth = True
+
+                                while start_screen_on_fifth:#activates the buttons being used to switch screens; after the screen is switch the intial while loop is deactived
+                                    current_mouse_position = pygame.mouse.get_pos()
+                                    pressed = False
+
+                                    for event in pygame.event.get():
+                                        if event.type == pygame.MOUSEBUTTONDOWN:
+
+                                            if first_button.collidepoint(current_mouse_position):
+                                                pressed = True
+                                                if pressed:
+                                                    new_display = pygame.display.set_mode((500, 500))
+                                                    new_display.fill(White)
+                                                    pygame.display.flip()
+                                                    start_screen_on_intial = False
+                                                    difficulty = 1
+
+                                            if second_button.collidepoint(current_mouse_position):
+                                                pressed = True
+                                                if pressed:
+                                                    new_display = pygame.display.set_mode((500, 500))
+                                                    new_display.fill(White)
+                                                    pygame.display.flip()
+                                                    difficulty = 2
+                                                    start_screen_on_intial = False
+
+                                            if third_button.collidepoint(current_mouse_position):
+                                                pressed = True
+                                                if pressed:
+                                                    new_display = pygame.display.set_mode((500, 500))
+                                                    new_display.fill(White)
+                                                    pygame.display.flip()
+                                                    difficulty = 3
+                                                    start_screen_on_intial = False
+
+
+        return difficulty#another method must be created to implement gameplay; function will return user imput so that the function can be called for gameplay
+
+
+    def game_play(self):
+        difficulty = self.generate_first_screen()
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 
     def run(self):
-        self.generate_first_screen()
+        self.game_play()
         while self.running:
-            #need to insert code that creates user interactions with the buttons created in the generate_first_screen method
             for event in pygame.event.get():
                 if event.type == 0:
                    self.running = False
