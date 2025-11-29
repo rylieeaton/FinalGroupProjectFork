@@ -27,7 +27,7 @@ class SudokuGenerator:
         self.row_length = row_length
         self.removed_cells = removed_cells
         self.board = []
-        self.box_length = row_length ** 0.5
+        self.box_length = int(row_length ** 0.5)
 
     '''
 	Returns a 2D python list of numbers which represents the board
@@ -94,11 +94,9 @@ class SudokuGenerator:
     '''
     def valid_in_box(self, row_start, col_start, num):
         for i in range(row_start, row_start+self.box_length):
-            if self.board[i][col_start] == num:
-                return False
-        for i in range(col_start, col_start+self.box_length):
-            if self.board[row_start][i] == num:
-                return False
+            for j in range(col_start, col_start+self.box_length):
+                if self.board[i][j] == num:
+                    return False
         return True
     
     '''
@@ -129,20 +127,13 @@ class SudokuGenerator:
 	Return: None
     '''
     def fill_box(self, row_start, col_start):
-        num_used = []
-        random_no = random.randrange(1, 9)
-        num_used.append(random_no)
-        for i in range(row_start, row_start + 2):
-            for j in range(col_start, col_start + 2):
-                if i == 0 and j == 0:
-                    self.board[i][j] = random_no
-                else:
-                    random_no = random.randrange(1, 9)
-                    for i in range(row_start, row_start + 2):
-                        for j in range(col_start, col_start + 2):
-                            if self.board[i][j] == random_no:
-                                random_no = random.randrange(1, 9)
-                    self.board[i][j] = random_no
+        nums = list(range(1, 10))
+        random.shuffle(nums)
+        if not self.board:
+            self.board = [[0 for _ in range(self.row_length)] for _ in range(self.row_length)]
+        for i in range(3):
+            for j in range(3):
+                self.board[row_start + i][col_start + j] = nums[i*3 + j]
 
     '''
     Fills the three boxes along the main diagonal of the board
@@ -222,8 +213,8 @@ class SudokuGenerator:
     def remove_cells(self):
         num_removed  = self.removed_cells
         while num_removed > 0:
-            random_num_one = random.randrange(9,9)
-            random_num_two = random.randrange(9,9)
+            random_num_one = random.randrange(0,9)
+            random_num_two = random.randrange(0,9)
             i = random_num_one
             j = random_num_two
             if self.board[i][j] == 0:

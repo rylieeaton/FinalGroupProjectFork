@@ -8,6 +8,7 @@ class Board:
         self.height = height
         self.screen = screen
         self.difficulty = difficulty
+        print("board being initialized")
 
         if difficulty == "easy":
             removed = 30
@@ -18,7 +19,7 @@ class Board:
 
         self.board = generate_sudoku(9, removed)
 
-        solver = SudokuGenerator(9, removed=0)
+        solver = SudokuGenerator(9, removed)
         solver.fill_values()
         self.solution = solver.get_board()
 
