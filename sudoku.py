@@ -108,19 +108,32 @@ class Sudoku():
 
 
     def game_play(self):
+        # colors
+        White = (255, 255, 255)
+        Black = (0, 0, 0)
+        Orange = (255, 165, 0)
+        # colors
+
+        game_play_on = True
+
         difficulty = self.generate_first_screen()
 
+        pygame.init()
+        new_display = pygame.display.set_mode((500, 500))
+        new_display.fill(White)
+        pygame.display.flip()
 
+        if difficulty == 1:
+            difficulty = "easy"
+        if difficulty == 2:
+            difficulty = "medium"
+        if difficulty == 3:
+            difficulty = "hard"
 
-
-
-
-
-
-
-
-
-
+        while game_play_on:
+            new_board = Board(9,9,new_display, difficulty)
+            new_board.draw()
+            pygame.flip()
 
 
 
