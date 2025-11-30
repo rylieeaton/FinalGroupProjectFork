@@ -3,13 +3,22 @@ from board import Board
 from cell import Cell
 import pygame
 
+##Todo: need to add arrow key usage
+
+##Todo: need to add ability to hit enter
+
+##Todo: need to add reset screen button
+
+##Todo: need to add a win screen/loss screen
+
+##Todo: need to add check for win
 
 class Sudoku:
 
     def __init__(self):
         pygame.init()
         self.running = True
-        self.screen = pygame.display.set_mode((540, 540))
+        self.screen = pygame.display.set_mode((540, 650))
         pygame.display.set_caption("Sudoku Game")
 
         self.WHITE = (255, 255, 255)
@@ -42,7 +51,6 @@ class Sudoku:
             font_title = pygame.font.SysFont("arial", 40)
             text4 = font_title.render("Select a Game Mode", True, self.BLACK)
             self.screen.blit(text4, (80,100))
-
             pygame.display.flip()
 
             for event in pygame.event.get():
@@ -69,6 +77,25 @@ class Sudoku:
 
         self.screen.fill(self.WHITE)
         new_board = Board(9, 9, self.screen, level)
+
+        font_buttons = pygame.font.SysFont("arial", 25)
+
+        game_first_button = pygame.Rect(108, 560, 100, 50)
+        game_second_button = pygame.Rect(216, 560, 100, 50)
+        game_third_button = pygame.Rect(324, 560, 100, 50)
+
+        pygame.draw.rect(self.screen, self.ORANGE, game_first_button)
+        pygame.draw.rect(self.screen, self.ORANGE, game_second_button)
+        pygame.draw.rect(self.screen, self.ORANGE, game_third_button)
+
+        text_1 = font_buttons.render("Reset", True, self.BLACK)
+        text_2 = font_buttons.render("Restart", True, self.BLACK)
+        text_3 = font_buttons.render("Exit", True, self.BLACK)
+
+        self.screen.blit(text_1, text_1.get_rect(center=game_first_button.center))
+        self.screen.blit(text_2, text_2.get_rect(center=game_second_button.center))
+        self.screen.blit(text_3, text_3.get_rect(center=game_third_button.center))
+
         game_play_on = True
         while game_play_on:
 
@@ -89,7 +116,6 @@ class Sudoku:
 
                     if cell_chose != None:
                         new_board.select(cell_chosenx, cell_choseny)
-                        #print(new_board.board)#
 
 
                 if eve.type == pygame.KEYDOWN:
@@ -97,9 +123,7 @@ class Sudoku:
                     pre_cell_val_y = cell_choseny
                     pre_val = new_board.board[pre_cell_val_x][pre_cell_val_y]
                     cell_chose = list(cell_chose)
-                    #print(pre_val)#
-                    #print(cell_chose)#
-                    #print(new_board.solution)#`
+
                     if eve.key == pygame.K_1 and pre_val == 0:
                             new_cell = Cell(1,cell_chosenx, cell_choseny,self.screen)
                             new_cell.draw()
@@ -136,10 +160,6 @@ class Sudoku:
                         new_cell = Cell(9, cell_chosenx, cell_choseny, self.screen)
                         new_cell.draw()
                         pygame.display.flip()
-
-
-
-
 
 
             for event in pygame.event.get():
