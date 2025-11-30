@@ -18,7 +18,8 @@ class Cell:
         self.sketched = 0
     
     def set_sketched_value(self, value):
-        self.sketched_value = value
+        self.sketched = value
+        self.value = 0
     
     def draw(self):
         x = self.col * 60
