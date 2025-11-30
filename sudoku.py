@@ -90,12 +90,12 @@ class Sudoku:
 
                     if cell_chose != None:
                         new_board.select(cell_chosenx, cell_choseny)
-                        print(new_board.board)
-                        print(pre_val)
+                        #print(new_board.board)
+                        #print(pre_val)
 
                 if eve.type == pygame.KEYDOWN:
                     cell_chose = list(cell_chose)
-                    print(cell_chose)
+                    #print(cell_chose)
 
                     if eve.key == pygame.K_1:
                         new_cell = Cell(1,cell_chosenx, cell_choseny,self.screen)
