@@ -16,12 +16,20 @@ class Board:
             removed = 40
         else:
             removed = 50
+        ##og code
+        #self.board = generate_sudoku(9, removed)
 
+        #solver = SudokuGenerator(9, removed)
+        #solver.fill_values()
+        #self.solution = solver.get_board()
+        ##og code
+
+        self.solution = SudokuGenerator(9, removed)
+        self.solution.fill_values()
         self.board = generate_sudoku(9, removed)
+        self.board = self.solution.remove_cells_return()
 
-        solver = SudokuGenerator(9, removed)
-        solver.fill_values()
-        self.solution = solver.get_board()
+
 
         self.original = []
         for row in self.board:

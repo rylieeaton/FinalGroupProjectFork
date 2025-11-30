@@ -94,7 +94,7 @@ class SudokuGenerator:
     '''
     def valid_in_box(self, row_start, col_start, num):
         for i in range(row_start, row_start+self.box_length):
-            for j in range(col_start, col_start+self.box_length):
+            for j in range(col_start, col_start + self.box_length):
                 if self.board[i][j] == num:
                     return False
         return True
@@ -222,6 +222,21 @@ class SudokuGenerator:
             else:
                 self.board[i][j] = 0
                 num_removed -= 1
+
+    def remove_cells_return(self):
+        num_removed = self.removed_cells
+        while num_removed > 0:
+            random_num_one = random.randrange(0, 9)
+            random_num_two = random.randrange(0, 9)
+            i = random_num_one
+            j = random_num_two
+            if self.board[i][j] == 0:
+                continue
+            else:
+                self.board[i][j] = 0
+                num_removed -= 1
+        return self.board
+
 
 
 
