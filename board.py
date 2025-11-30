@@ -26,10 +26,13 @@ class Board:
 
         self.solution = SudokuGenerator(9, removed)
         self.solution.fill_values()
+
+        self.solution_array = []
+        for b in self.solution.board:
+            self.solution_array.append(b[:])
+
         self.board = generate_sudoku(9, removed)
         self.board = self.solution.remove_cells_return()
-
-
 
         self.original = []
         for row in self.board:
@@ -114,6 +117,6 @@ class Board:
     def check_board(self):
         for r in range(9):
             for c in range(9):
-                if self.cells[r][c].value != self.solution[r][c]:
+                if self.cells[r][c].value != self.solution_array[r][c]:
                     return False
         return True

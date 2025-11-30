@@ -133,50 +133,41 @@ class Sudoku:
 
 
                         if eve.key == pygame.K_1 and pre_val == 0:
-                            new_cell = Cell(1,cell_chose[0], cell_chose[1],self.screen)
-                            current_board.cells[cell_chose[0]][cell_chose[1]] = new_cell
-                            new_cell.draw()
-                            pygame.display.flip()
+                            cell = current_board.cells[cell_chose[0]][cell_chose[1]]
+                            cell.set_sketched_value(1)
+                            cell.draw()
                         elif eve.key == pygame.K_2 and pre_val == 0:
-                            new_cell = Cell(2, cell_chose[0], cell_chose[1], self.screen)
-                            current_board.cells[cell_chose[0]][cell_chose[1]] = new_cell
-                            new_cell.draw()
-                            pygame.display.flip()
+                            cell = current_board.cells[cell_chose[0]][cell_chose[1]]
+                            cell.set_sketched_value(2)
+                            cell.draw()
                         elif eve.key == pygame.K_3 and pre_val == 0:
-                            new_cell = Cell(3, cell_chose[0], cell_chose[1], self.screen)
-                            current_board.cells[cell_chose[0]][cell_chose[1]] = new_cell
-                            new_cell.draw()
-                            pygame.display.flip()
+                            cell = current_board.cells[cell_chose[0]][cell_chose[1]]
+                            cell.set_sketched_value(3)
+                            cell.draw()
                         elif eve.key == pygame.K_4 and pre_val == 0:
-                            new_cell = Cell(4, cell_chose[0], cell_chose[1], self.screen)
-                            current_board.cells[cell_chose[0]][cell_chose[1]] = new_cell
-                            new_cell.draw()
-                            pygame.display.flip()
+                            cell = current_board.cells[cell_chose[0]][cell_chose[1]]
+                            cell.set_sketched_value(4)
+                            cell.draw()
                         elif eve.key == pygame.K_5 and pre_val == 0:
-                            new_cell = Cell(5, cell_chose[0], cell_chose[1], self.screen)
-                            current_board.cells[cell_chose[0]][cell_chose[1]] = new_cell
-                            new_cell.draw()
-                            pygame.display.flip()
+                            cell = current_board.cells[cell_chose[0]][cell_chose[1]]
+                            cell.set_sketched_value(5)
+                            cell.draw()
                         elif eve.key == pygame.K_6 and pre_val == 0:
-                            new_cell = Cell(6, cell_chose[0], cell_chose[1], self.screen)
-                            current_board.cells[cell_chose[0]][cell_chose[1]] = new_cell
-                            new_cell.draw()
-                            pygame.display.flip()
+                            cell = current_board.cells[cell_chose[0]][cell_chose[1]]
+                            cell.set_sketched_value(6)
+                            cell.draw()
                         elif eve.key == pygame.K_7 and pre_val == 0:
-                            new_cell = Cell(7, cell_chose[0], cell_chose[1], self.screen)
-                            current_board.cells[cell_chose[0]][cell_chose[1]] = new_cell
-                            new_cell.draw()
-                            pygame.display.flip()
+                            cell = current_board.cells[cell_chose[0]][cell_chose[1]]
+                            cell.set_sketched_value(7)
+                            cell.draw()
                         elif eve.key == pygame.K_8 and pre_val == 0:
-                            new_cell = Cell(8, cell_chose[0], cell_chose[1], self.screen)
-                            current_board.cells[cell_chose[0]][cell_chose[1]] = new_cell
-                            new_cell.draw()
-                            pygame.display.flip()
+                            cell = current_board.cells[cell_chose[0]][cell_chose[1]]
+                            cell.set_sketched_value(8)
+                            cell.draw()
                         elif eve.key == pygame.K_9 and pre_val == 0:
-                            new_cell = Cell(9, cell_chose[0], cell_chose[1], self.screen)
-                            current_board.cells[cell_chose[0]][cell_chose[1]] = new_cell
-                            new_cell.draw()
-                            pygame.display.flip()
+                            cell = current_board.cells[cell_chose[0]][cell_chose[1]]
+                            cell.set_sketched_value(9)
+                            cell.draw()
 
                         elif eve.key == pygame.K_UP:
                             cell_chose = (max(0, cell_chose[0] -1), cell_chose[1])
@@ -191,6 +182,11 @@ class Sudoku:
                             cell_chose = (cell_chose[0], min(8, cell_chose[1] + 1))
                             current_board.select(cell_chose[0], cell_chose[1])
                         elif eve.key == pygame.K_RETURN:
+
+                            cell = current_board.cells[cell_chose[0]][cell_chose[1]]
+                            if cell.sketched != 0:
+                                cell.set_cell_value(cell.sketched)
+
                             if current_board.is_full():
                                 current_board.solution
                                 print(vars(current_board))
