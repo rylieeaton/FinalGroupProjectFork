@@ -111,7 +111,7 @@ class Board:
         for r in range(9):
             for c in range(9):
                 self.cells[r][c].set_cell_value(self.original[r][c])
-                self.cells[r][c].set_sketched_value(0)
+                #self.cells[r][c].set_sketched_value(0)
         self.update_board()
 
     def check_board(self):

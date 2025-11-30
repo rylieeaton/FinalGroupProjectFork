@@ -3,12 +3,6 @@ from board import Board
 from cell import Cell
 import pygame
 
-##Todo: need to add ability to hit enter
-
-##Todo: need to add a win screen/loss screen
-
-##Todo: need to add check for win
-
 class Sudoku:
 
     def __init__(self):
@@ -99,8 +93,6 @@ class Sudoku:
 
             while game_play_on:
                 current_board.draw()
-                #print(vars(current_board.solution))
-                #current_board = new_board.board
                 pygame.display.flip()
                 mouse_pos = pygame.mouse.get_pos()
                 mouse_posx = mouse_pos[0]
@@ -113,6 +105,7 @@ class Sudoku:
                         pos = pygame.mouse.get_pos()
                         if game_first_button.collidepoint(pos):
                             current_board.reset_to_original()
+                            print(current_board.board)
                             current_board.draw()
                             pygame.display.flip()
                         elif game_second_button.collidepoint(pos):
@@ -125,6 +118,9 @@ class Sudoku:
                             cell_chose = current_board.click(mouse_posx, mouse_posy)
 
                             current_board.select(cell_chose[0], cell_chose[1])
+
+                        print(current_board.solution_array)
+
 
                     if eve.type == pygame.KEYDOWN:
                         pre_cell_val_x = cell_chose[0]
@@ -189,11 +185,70 @@ class Sudoku:
 
                             if current_board.is_full():
                                 current_board.solution
-                                print(vars(current_board))
+                                #print(vars(current_board))
                                 if current_board.check_board():
-                                    print("win")
+                                    won = True
+                                    while won:
+                                        self.screen.fill(self.WHITE)
+
+                                        font_title = pygame.font.SysFont("arial", 40)
+                                        text4 = font_title.render("Game won!", True, self.BLACK)
+                                        self.screen.blit(text4, (80, 100))
+
+                                        text_won = font_buttons.render("Exit", True, self.BLACK)
+                                        win_exit = pygame.Rect(216, 560, 100, 50)
+                                        pygame.draw.rect(self.screen, self.ORANGE, win_exit)
+                                        self.screen.blit(text_won, text_won.get_rect(center=win_exit.center))
+
+                                        mouse_pos = pygame.mouse.get_pos()
+
+                                        pygame.display.flip()
+                                        for event in pygame.event.get():
+                                            if event.type == pygame.MOUSEBUTTONDOWN:
+                                                if win_exit.collidepoint(mouse_pos):
+                                                    end_click = True
+                                                    won = False
+
+
+                                    if end_click:
+                                        game_play_on = False
+                                        game_func_active = False
+                                        pygame.quit()
+                                        exit()
+
+
                                 else:
-                                    print("gameover")
+                                    #print("gameover")
+                                    loss = True
+                                    while loss:
+                                        self.screen.fill(self.WHITE)
+
+                                        font_title = pygame.font.SysFont("arial", 40)
+                                        text4 = font_title.render("Game Over :(", True, self.BLACK)
+                                        self.screen.blit(text4, (80, 100))
+
+                                        text_loss = font_buttons.render("Restart", True, self.BLACK)
+                                        loss_rect = pygame.Rect(216, 560, 100, 50)
+                                        pygame.draw.rect(self.screen, self.ORANGE, loss_rect)
+                                        self.screen.blit(text_loss, text_loss.get_rect(center=loss_rect.center))
+
+                                        mouse_pos = pygame.mouse.get_pos()
+
+                                        pygame.display.flip()
+                                        for event in pygame.event.get():
+                                            if event.type == pygame.MOUSEBUTTONDOWN:
+                                                #print("lossd")
+                                                if loss_rect.collidepoint(mouse_pos):
+                                                    #print("loss")
+                                                    lclick = True
+                                                    loss = False
+
+                                    if lclick:
+                                        #print("lclick")
+                                        game_play_on = False
+
+
+
 
 
 
