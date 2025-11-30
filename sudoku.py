@@ -99,6 +99,7 @@ class Sudoku:
 
             while game_play_on:
                 current_board.draw()
+                #print(vars(current_board.solution))
                 #current_board = new_board.board
                 pygame.display.flip()
                 mouse_pos = pygame.mouse.get_pos()
@@ -189,6 +190,16 @@ class Sudoku:
                         elif eve.key == pygame.K_RIGHT:
                             cell_chose = (cell_chose[0], min(8, cell_chose[1] + 1))
                             current_board.select(cell_chose[0], cell_chose[1])
+                        elif eve.key == pygame.K_RETURN:
+                            if current_board.is_full():
+                                current_board.solution
+                                print(vars(current_board))
+                                if current_board.check_board():
+                                    print("win")
+                                else:
+                                    print("gameover")
+
+
 
                     elif eve.type == pygame.QUIT:
                         game_play_on = False
