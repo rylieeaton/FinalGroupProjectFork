@@ -3,11 +3,7 @@ from board import Board
 from cell import Cell
 import pygame
 
-##Todo: need to add arrow key usage
-
 ##Todo: need to add ability to hit enter
-
-##Todo: need to add reset screen button
 
 ##Todo: need to add a win screen/loss screen
 
@@ -69,104 +65,135 @@ class Sudoku:
         return difficulty
 
     def game_play(self):
-        difficulty = self.generate_first_screen()
-        self.screen.fill(self.WHITE)
-        pygame.display.flip()
-
-        level = {1: "easy", 2: "medium", 3: "hard"}.get(difficulty, "easy")
-
-        self.screen.fill(self.WHITE)
-        new_board = Board(9, 9, self.screen, level)
-
-        font_buttons = pygame.font.SysFont("arial", 25)
-
-        game_first_button = pygame.Rect(108, 560, 100, 50)
-        game_second_button = pygame.Rect(216, 560, 100, 50)
-        game_third_button = pygame.Rect(324, 560, 100, 50)
-
-        pygame.draw.rect(self.screen, self.ORANGE, game_first_button)
-        pygame.draw.rect(self.screen, self.ORANGE, game_second_button)
-        pygame.draw.rect(self.screen, self.ORANGE, game_third_button)
-
-        text_1 = font_buttons.render("Reset", True, self.BLACK)
-        text_2 = font_buttons.render("Restart", True, self.BLACK)
-        text_3 = font_buttons.render("Exit", True, self.BLACK)
-
-        self.screen.blit(text_1, text_1.get_rect(center=game_first_button.center))
-        self.screen.blit(text_2, text_2.get_rect(center=game_second_button.center))
-        self.screen.blit(text_3, text_3.get_rect(center=game_third_button.center))
-
-        game_play_on = True
-        while game_play_on:
-
-            new_board.draw()
+        game_func_active = True
+        while game_func_active:
+            difficulty = self.generate_first_screen()
+            self.screen.fill(self.WHITE)
             pygame.display.flip()
-            mouse_pos = pygame.mouse.get_pos()
-            mouse_posx = mouse_pos[0]
-            mouse_posy = mouse_pos[1]
 
-            ##Code below for interactive elements
-            for eve in pygame.event.get():
+            level = {1: "easy", 2: "medium", 3: "hard"}.get(difficulty, "easy")
 
-                if eve.type == pygame.MOUSEBUTTONDOWN:
-                    cell_chose = []
-                    cell_chose = new_board.click(mouse_posx, mouse_posy)
-                    cell_chosenx = cell_chose[0]
-                    cell_choseny = cell_chose[1]
+            self.screen.fill(self.WHITE)
+            current_board = Board(9, 9, self.screen, level)
 
-                    if cell_chose != None:
-                        new_board.select(cell_chosenx, cell_choseny)
+            font_buttons = pygame.font.SysFont("arial", 25)
+
+            game_first_button = pygame.Rect(108, 560, 100, 50)
+            game_second_button = pygame.Rect(216, 560, 100, 50)
+            game_third_button = pygame.Rect(324, 560, 100, 50)
+
+            pygame.draw.rect(self.screen, self.ORANGE, game_first_button)
+            pygame.draw.rect(self.screen, self.ORANGE, game_second_button)
+            pygame.draw.rect(self.screen, self.ORANGE, game_third_button)
+
+            text_1 = font_buttons.render("Reset", True, self.BLACK)
+            text_2 = font_buttons.render("Restart", True, self.BLACK)
+            text_3 = font_buttons.render("Exit", True, self.BLACK)
+
+            self.screen.blit(text_1, text_1.get_rect(center=game_first_button.center))
+            self.screen.blit(text_2, text_2.get_rect(center=game_second_button.center))
+            self.screen.blit(text_3, text_3.get_rect(center=game_third_button.center))
+
+            game_play_on = True
+            cell_chose = (0,0)
+
+            while game_play_on:
+                current_board.draw()
+                #current_board = new_board.board
+                pygame.display.flip()
+                mouse_pos = pygame.mouse.get_pos()
+                mouse_posx = mouse_pos[0]
+                mouse_posy = mouse_pos[1]
+
+                ##Code below for interactive elements
+                for eve in pygame.event.get():
+
+                    if eve.type == pygame.MOUSEBUTTONDOWN:
+                        pos = pygame.mouse.get_pos()
+                        if game_first_button.collidepoint(pos):
+                            current_board.reset_to_original()
+                            current_board.draw()
+                            pygame.display.flip()
+                        elif game_second_button.collidepoint(pos):
+                            game_play_on = False
+                        elif game_third_button.collidepoint(pos):
+                            game_play_on = False
+                            pygame.quit()
+                            exit()
+                        else:
+                            cell_chose = current_board.click(mouse_posx, mouse_posy)
+
+                            current_board.select(cell_chose[0], cell_chose[1])
+
+                    if eve.type == pygame.KEYDOWN:
+                        pre_cell_val_x = cell_chose[0]
+                        pre_cell_val_y = cell_chose[1]
+                        pre_val = current_board.board[pre_cell_val_x][pre_cell_val_y]
 
 
-                if eve.type == pygame.KEYDOWN:
-                    pre_cell_val_x = cell_chosenx
-                    pre_cell_val_y = cell_choseny
-                    pre_val = new_board.board[pre_cell_val_x][pre_cell_val_y]
-                    cell_chose = list(cell_chose)
-
-                    if eve.key == pygame.K_1 and pre_val == 0:
-                            new_cell = Cell(1,cell_chosenx, cell_choseny,self.screen)
+                        if eve.key == pygame.K_1 and pre_val == 0:
+                            new_cell = Cell(1,cell_chose[0], cell_chose[1],self.screen)
+                            current_board.cells[cell_chose[0]][cell_chose[1]] = new_cell
                             new_cell.draw()
                             pygame.display.flip()
-                    elif eve.key == pygame.K_2 and pre_val == 0:
-                        new_cell = Cell(2, cell_chosenx, cell_choseny, self.screen)
-                        new_cell.draw()
-                        pygame.display.flip()
-                    elif eve.key == pygame.K_3 and pre_val == 0:
-                        new_cell = Cell(3, cell_chosenx, cell_choseny, self.screen)
-                        new_cell.draw()
-                        pygame.display.flip()
-                    elif eve.key == pygame.K_4 and pre_val == 0:
-                        new_cell = Cell(4, cell_chosenx, cell_choseny, self.screen)
-                        new_cell.draw()
-                        pygame.display.flip()
-                    elif eve.key == pygame.K_5 and pre_val == 0:
-                        new_cell = Cell(5, cell_chosenx, cell_choseny, self.screen)
-                        new_cell.draw()
-                        pygame.display.flip()
-                    elif eve.key == pygame.K_6 and pre_val == 0:
-                        new_cell = Cell(6, cell_chosenx, cell_choseny, self.screen)
-                        new_cell.draw()
-                        pygame.display.flip()
-                    elif eve.key == pygame.K_7 and pre_val == 0:
-                        new_cell = Cell(7, cell_chosenx, cell_choseny, self.screen)
-                        new_cell.draw()
-                        pygame.display.flip()
-                    elif eve.key == pygame.K_8 and pre_val == 0:
-                        new_cell = Cell(8, cell_chosenx, cell_choseny, self.screen)
-                        new_cell.draw()
-                        pygame.display.flip()
-                    elif eve.key == pygame.K_9 and pre_val == 0:
-                        new_cell = Cell(9, cell_chosenx, cell_choseny, self.screen)
-                        new_cell.draw()
-                        pygame.display.flip()
+                        elif eve.key == pygame.K_2 and pre_val == 0:
+                            new_cell = Cell(2, cell_chose[0], cell_chose[1], self.screen)
+                            current_board.cells[cell_chose[0]][cell_chose[1]] = new_cell
+                            new_cell.draw()
+                            pygame.display.flip()
+                        elif eve.key == pygame.K_3 and pre_val == 0:
+                            new_cell = Cell(3, cell_chose[0], cell_chose[1], self.screen)
+                            current_board.cells[cell_chose[0]][cell_chose[1]] = new_cell
+                            new_cell.draw()
+                            pygame.display.flip()
+                        elif eve.key == pygame.K_4 and pre_val == 0:
+                            new_cell = Cell(4, cell_chose[0], cell_chose[1], self.screen)
+                            current_board.cells[cell_chose[0]][cell_chose[1]] = new_cell
+                            new_cell.draw()
+                            pygame.display.flip()
+                        elif eve.key == pygame.K_5 and pre_val == 0:
+                            new_cell = Cell(5, cell_chose[0], cell_chose[1], self.screen)
+                            current_board.cells[cell_chose[0]][cell_chose[1]] = new_cell
+                            new_cell.draw()
+                            pygame.display.flip()
+                        elif eve.key == pygame.K_6 and pre_val == 0:
+                            new_cell = Cell(6, cell_chose[0], cell_chose[1], self.screen)
+                            current_board.cells[cell_chose[0]][cell_chose[1]] = new_cell
+                            new_cell.draw()
+                            pygame.display.flip()
+                        elif eve.key == pygame.K_7 and pre_val == 0:
+                            new_cell = Cell(7, cell_chose[0], cell_chose[1], self.screen)
+                            current_board.cells[cell_chose[0]][cell_chose[1]] = new_cell
+                            new_cell.draw()
+                            pygame.display.flip()
+                        elif eve.key == pygame.K_8 and pre_val == 0:
+                            new_cell = Cell(8, cell_chose[0], cell_chose[1], self.screen)
+                            current_board.cells[cell_chose[0]][cell_chose[1]] = new_cell
+                            new_cell.draw()
+                            pygame.display.flip()
+                        elif eve.key == pygame.K_9 and pre_val == 0:
+                            new_cell = Cell(9, cell_chose[0], cell_chose[1], self.screen)
+                            current_board.cells[cell_chose[0]][cell_chose[1]] = new_cell
+                            new_cell.draw()
+                            pygame.display.flip()
 
+                        elif eve.key == pygame.K_UP:
+                            cell_chose = (max(0, cell_chose[0] -1), cell_chose[1])
+                            current_board.select(cell_chose[0], cell_chose[1])
+                        elif eve.key == pygame.K_DOWN:
+                            cell_chose = (min(8, cell_chose[0]+1), cell_chose[1])
+                            current_board.select(cell_chose[0], cell_chose[1])
+                        elif eve.key == pygame.K_LEFT:
+                            cell_chose = (cell_chose[0], max(0, cell_chose[1]-1))
+                            current_board.select(cell_chose[0], cell_chose[1])
+                        elif eve.key == pygame.K_RIGHT:
+                            cell_chose = (cell_chose[0], min(8, cell_chose[1] + 1))
+                            current_board.select(cell_chose[0], cell_chose[1])
 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    game_play_on = False
-                    pygame.quit()
-                    exit()
+                    elif eve.type == pygame.QUIT:
+                        game_play_on = False
+                        pygame.quit()
+                        exit()
 
     def run(self):
         self.game_play()

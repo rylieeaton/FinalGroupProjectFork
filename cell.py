@@ -25,6 +25,7 @@ class Cell:
         y = self.row * 60
         rect = pygame.Rect(x, y, 60, 60)
 
+        self.screen.fill((255, 255, 255), rect)
         if self.selected:
             pygame.draw.rect(self.screen, (255, 0, 0), rect, 3)
         else:
