@@ -20,9 +20,9 @@ class Sudoku:
         difficulty = None
         font = pygame.font.SysFont("arial", 20)
 
-        first_button = pygame.Rect(50, 400, 100, 50)
-        second_button = pygame.Rect(200, 400, 100, 50)
-        third_button = pygame.Rect(350, 400, 100, 50)
+        first_button = pygame.Rect(108, 400, 100, 50)
+        second_button = pygame.Rect(216, 400, 100, 50)
+        third_button = pygame.Rect(324, 400, 100, 50)
 
         while difficulty is None:
             self.screen.fill(self.WHITE)
@@ -38,6 +38,10 @@ class Sudoku:
             self.screen.blit(text1, text1.get_rect(center=first_button.center))
             self.screen.blit(text2, text2.get_rect(center=second_button.center))
             self.screen.blit(text3, text3.get_rect(center=third_button.center))
+
+            font_title = pygame.font.SysFont("arial", 40)
+            text4 = font_title.render("Select a Game Mode", True, self.BLACK)
+            self.screen.blit(text4, (80,100))
 
             pygame.display.flip()
 
@@ -82,14 +86,16 @@ class Sudoku:
                     cell_chose = new_board.click(mouse_posx, mouse_posy)
                     cell_chosenx = cell_chose[0]
                     cell_choseny = cell_chose[1]
+                    pre_val = new_board.board[cell_chosenx][cell_chosenx]
 
                     if cell_chose != None:
                         new_board.select(cell_chosenx, cell_choseny)
-                        #print(new_board.board)
+                        print(new_board.board)
+                        print(pre_val)
 
                 if eve.type == pygame.KEYDOWN:
                     cell_chose = list(cell_chose)
-                    #print(cell_chose)
+                    print(cell_chose)
 
                     if eve.key == pygame.K_1:
                         new_cell = Cell(1,cell_chosenx, cell_choseny,self.screen)
